@@ -1,3 +1,3 @@
-# java-spring-boot-rest-template
+# Bugtracker Backend
 
-A Spring Boot REST api template with basic user onboarding and OAUTH configured
+An application to help developers keep track of bugs across difference projects
