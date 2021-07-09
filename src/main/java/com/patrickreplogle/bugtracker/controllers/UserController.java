@@ -43,9 +43,9 @@ public class UserController {
     @GetMapping(value = "/user/{userId}",
             produces = "application/json")
     public ResponseEntity<?> getUserById(@PathVariable Long userId) {
-        User u = userService.findUserById(userId);
+        User user = userService.findUserById(userId);
 
-        return new ResponseEntity<>(u,
+        return new ResponseEntity<>(user,
                 HttpStatus.OK);
     }
 
@@ -55,8 +55,8 @@ public class UserController {
     public ResponseEntity<?> getUserByName(
             @PathVariable
                     String userName) {
-        User u = userService.findByName(userName);
-        return new ResponseEntity<>(u,
+        User user = userService.findByName(userName);
+        return new ResponseEntity<>(user,
                 HttpStatus.OK);
     }
 
@@ -66,8 +66,8 @@ public class UserController {
     public ResponseEntity<?> getUserLikeName(
             @PathVariable
                     String userName) {
-        List<User> u = userService.findByNameContaining(userName);
-        return new ResponseEntity<>(u,
+        List<User> user = userService.findByNameContaining(userName);
+        return new ResponseEntity<>(user,
                 HttpStatus.OK);
     }
 

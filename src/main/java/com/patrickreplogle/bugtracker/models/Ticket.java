@@ -5,6 +5,8 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tickets")
@@ -43,6 +45,10 @@ public class Ticket extends Auditable {
     @JoinColumn(name = "assigneduserid")
     @JsonIgnoreProperties(value = {"allProjects", "ownedProjects", "roles", "ownedTickets", "assignedTickets", "hibernateLazyInitializer", "handler"}, allowSetters = true)
     private User assignedUser;
+
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(value = {"assignedUser", "project", "roles", "allProjects", "ownedProjects", "hibernateLazyInitializer", "handler"}, allowSetters = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public Ticket() {
     }

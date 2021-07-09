@@ -67,6 +67,10 @@ public class User extends Auditable {
     @JsonIgnoreProperties(value = { "project", "roles", "tickets", "assignedUser", "ticketOwner"}, allowSetters = true)
     private Set<Ticket> assignedTickets = new HashSet<>();
 
+    @OneToMany(mappedBy = "commentOwner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(value = { "commentOwner", "ticket"}, allowSetters = true)
+    private List<Comment> comments = new ArrayList<>();
+
     // === constructors ===
     public User() {
     }
@@ -180,6 +184,14 @@ public class User extends Auditable {
 
     public void setAssignedTickets(Set<Ticket> assignedTickets) {
         this.assignedTickets = assignedTickets;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     // === override methods ===

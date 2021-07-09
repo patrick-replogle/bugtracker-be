@@ -39,9 +39,9 @@ public class ProjectController {
     @GetMapping(value = "/project/{projectid}",
             produces = "application/json")
     public ResponseEntity<?> getProjectById(@PathVariable Long projectid) {
-        Project p = projectService.findById(projectid);
+        Project project = projectService.findById(projectid);
 
-        return new ResponseEntity<>(p, HttpStatus.OK);
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     // create a new project
