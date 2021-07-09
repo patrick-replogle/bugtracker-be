@@ -2,7 +2,7 @@ package com.patrickreplogle.bugtracker.controllers;
 
 import com.patrickreplogle.bugtracker.exceptions.ResourceFoundException;
 import com.patrickreplogle.bugtracker.models.Ticket;
-import com.patrickreplogle.bugtracker.services.TicketService;
+import com.patrickreplogle.bugtracker.services.tickets.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

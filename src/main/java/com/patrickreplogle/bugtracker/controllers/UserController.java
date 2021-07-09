@@ -4,18 +4,14 @@ import com.patrickreplogle.bugtracker.exceptions.ResourceFoundException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
 import com.patrickreplogle.bugtracker.models.User;
 import com.patrickreplogle.bugtracker.repository.UserRepository;
-import com.patrickreplogle.bugtracker.services.ProjectService;
-import com.patrickreplogle.bugtracker.services.UserService;
-import com.patrickreplogle.bugtracker.util.Constants;
+import com.patrickreplogle.bugtracker.services.projects.ProjectService;
+import com.patrickreplogle.bugtracker.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @RestController

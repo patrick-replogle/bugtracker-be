@@ -2,7 +2,7 @@ package com.patrickreplogle.bugtracker.controllers;
 
 import com.patrickreplogle.bugtracker.exceptions.ResourceFoundException;
 import com.patrickreplogle.bugtracker.models.Comment;
-import com.patrickreplogle.bugtracker.services.CommentService;
+import com.patrickreplogle.bugtracker.services.comments.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

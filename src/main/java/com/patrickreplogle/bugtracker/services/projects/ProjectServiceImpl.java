@@ -1,10 +1,11 @@
-package com.patrickreplogle.bugtracker.services;
+package com.patrickreplogle.bugtracker.services.projects;
 
 import com.patrickreplogle.bugtracker.exceptions.AccessDeniedException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
 import com.patrickreplogle.bugtracker.models.Project;
 import com.patrickreplogle.bugtracker.models.User;
 import com.patrickreplogle.bugtracker.repository.ProjectRepository;
+import com.patrickreplogle.bugtracker.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

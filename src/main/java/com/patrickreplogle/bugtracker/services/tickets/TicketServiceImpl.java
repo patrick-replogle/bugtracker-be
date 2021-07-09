@@ -1,4 +1,4 @@
-package com.patrickreplogle.bugtracker.services;
+package com.patrickreplogle.bugtracker.services.tickets;
 
 import com.patrickreplogle.bugtracker.exceptions.AccessDeniedException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;

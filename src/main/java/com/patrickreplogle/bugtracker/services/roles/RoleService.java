@@ -1,4 +1,4 @@
-package com.patrickreplogle.bugtracker.services;
+package com.patrickreplogle.bugtracker.services.roles;
 
 import com.patrickreplogle.bugtracker.models.Role;
 

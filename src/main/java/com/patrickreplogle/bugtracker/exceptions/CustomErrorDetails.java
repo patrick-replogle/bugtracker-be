@@ -1,6 +1,6 @@
 package com.patrickreplogle.bugtracker.exceptions;
 
-import com.patrickreplogle.bugtracker.services.HelperFunctions;
+import com.patrickreplogle.bugtracker.services.helperFunctions.HelperFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;

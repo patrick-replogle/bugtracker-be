@@ -3,7 +3,7 @@ package com.patrickreplogle.bugtracker.handlers;
 import com.patrickreplogle.bugtracker.exceptions.ResourceFoundException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
 import com.patrickreplogle.bugtracker.models.ErrorDetail;
-import com.patrickreplogle.bugtracker.services.HelperFunctions;
+import com.patrickreplogle.bugtracker.services.helperFunctions.HelperFunctions;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,8 @@
-package com.patrickreplogle.bugtracker.services;
+package com.patrickreplogle.bugtracker.services.comments;
 
 import com.patrickreplogle.bugtracker.exceptions.AccessDeniedException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
 import com.patrickreplogle.bugtracker.models.Comment;
-import com.patrickreplogle.bugtracker.models.Ticket;
 import com.patrickreplogle.bugtracker.models.User;
 import com.patrickreplogle.bugtracker.repository.CommentRepository;
 import com.patrickreplogle.bugtracker.repository.UserRepository;

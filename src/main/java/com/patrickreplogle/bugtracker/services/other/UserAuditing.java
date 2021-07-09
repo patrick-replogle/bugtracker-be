@@ -1,4 +1,4 @@
-package com.patrickreplogle.bugtracker.services;
+package com.patrickreplogle.bugtracker.services.other;
 
 import org.springframework.data.domain.AuditorAware;
 

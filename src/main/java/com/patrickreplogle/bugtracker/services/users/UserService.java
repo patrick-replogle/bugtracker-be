@@ -1,4 +1,4 @@
-package com.patrickreplogle.bugtracker.services;
+package com.patrickreplogle.bugtracker.services.users;
 
 import com.patrickreplogle.bugtracker.models.Project;
 import com.patrickreplogle.bugtracker.models.User;

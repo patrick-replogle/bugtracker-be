@@ -1,9 +1,9 @@
 package com.patrickreplogle.bugtracker;
 
 import com.patrickreplogle.bugtracker.models.*;
-import com.patrickreplogle.bugtracker.services.ProjectService;
-import com.patrickreplogle.bugtracker.services.RoleService;
-import com.patrickreplogle.bugtracker.services.UserService;
+import com.patrickreplogle.bugtracker.services.projects.ProjectService;
+import com.patrickreplogle.bugtracker.services.roles.RoleService;
+import com.patrickreplogle.bugtracker.services.users.UserService;
 import com.patrickreplogle.bugtracker.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,9 +19,6 @@ public class SeedData implements CommandLineRunner {
 
     @Autowired
     RoleService roleService;
-
-    @Autowired
-    ProjectService projectService;
 
     @Transactional
     @Override
@@ -44,14 +41,5 @@ public class SeedData implements CommandLineRunner {
 
         userService.save(user1);
         userService.save(user2);
-
-//        Project p1 = new Project("project1", "description goes here", "", "", "", user1.getUserid());
-//        Project p2 = new Project("project2", "description goes here", "", "", "", user2.getUserid());
-//
-//        p1.setProjectid(0);
-//        p2.setProjectid(0);
-//
-//        projectService.save(p1);
-//        projectService.save(p2);
     }
 }
