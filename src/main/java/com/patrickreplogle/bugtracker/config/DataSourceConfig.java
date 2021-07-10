@@ -1,5 +1,6 @@
 package com.patrickreplogle.bugtracker.config;
 
+import com.patrickreplogle.bugtracker.util.Constants;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,12 +17,6 @@ import javax.sql.DataSource;
 public class DataSourceConfig
 {
     /**
-     * The property from application properties. Defaults to H2
-     */
-    @Value("${local.run.db:h2}")
-    private String dbValue;
-
-    /**
      * A config var for the database link - defaults to nothing
      */
     @Value("${spring.datasource.url:}")
@@ -35,7 +30,7 @@ public class DataSourceConfig
     @Bean
     public DataSource dataSource()
     {
-        if (dbValue.equalsIgnoreCase("POSTGRESQL"))
+        if (System.getenv(Constants.RUNTIME_ENV) == "production")
         {
             // Assume Heroku
             HikariConfig config = new HikariConfig();
