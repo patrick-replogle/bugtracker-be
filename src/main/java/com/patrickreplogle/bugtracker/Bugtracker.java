@@ -21,6 +21,7 @@ public class Bugtracker {
     public static void main(String[] args) {
         checkEnvironmentVariable(Constants.OAUTHCLIENTID);
         checkEnvironmentVariable(Constants.OAUTHCLIENTSECRET);
+        checkEnvironmentVariable(Constants.RUNTIME_ENV);
 
         if (!stop) {
             SpringApplication.run(Bugtracker.class, args);
