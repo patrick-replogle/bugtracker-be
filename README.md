@@ -29,7 +29,6 @@ Backend base url: https://bugtracker-back-end.herokuapp.com
  |  [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/patrick-replogle-409a92193/)|
  
  ## Required Environment Variables
- - RUNTIME_ENV (development / production / testing)
  - OAUTHCLIENTID
  - OAUTHCLIENTSECRET
  
