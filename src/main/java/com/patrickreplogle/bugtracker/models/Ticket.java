@@ -33,7 +33,7 @@ public class Ticket extends Auditable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "projectid")
-    @JsonIgnoreProperties(value = {"tickets"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"tickets", "projectOwner", "users"}, allowSetters = true)
     private Project project;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -43,11 +43,11 @@ public class Ticket extends Auditable {
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "assigneduserid")
-    @JsonIgnoreProperties(value = {"allProjects", "ownedProjects", "roles", "ownedTickets", "assignedTickets", "hibernateLazyInitializer", "handler"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"allProjects", "ownedProjects", "roles", "ownedTickets", "assignedTickets", "comments", "hibernateLazyInitializer", "handler"}, allowSetters = true)
     private User assignedUser;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties(value = {"assignedUser", "project", "roles", "allProjects", "ownedProjects", "hibernateLazyInitializer", "handler"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"assignedUser", "project", "roles", "allProjects", "ownedProjects", "comments", "ticket", "hibernateLazyInitializer", "handler"}, allowSetters = true)
     private List<Comment> comments = new ArrayList<>();
 
     public Ticket() {
@@ -133,5 +133,13 @@ public class Ticket extends Auditable {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

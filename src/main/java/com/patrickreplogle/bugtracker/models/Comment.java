@@ -23,7 +23,7 @@ public class Comment extends Auditable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "ticketid")
-    @JsonIgnoreProperties(value = {"ticketOwner", "project", "assignedUser" }, allowSetters = true)
+    @JsonIgnoreProperties(value = {"ticketOwner", "project", "assignedUser", "comments" }, allowSetters = true)
     private Ticket ticket;
 
     // === constructors ===

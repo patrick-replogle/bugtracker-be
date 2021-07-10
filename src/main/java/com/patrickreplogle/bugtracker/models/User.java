@@ -44,6 +44,7 @@ public class User extends Auditable {
     @JsonIgnoreProperties(value = {"user"}, allowSetters = true)
     private Set<UserRoles> roles = new HashSet<>();
 
+    // a user can have many projects and a project can have many users
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -59,14 +60,16 @@ public class User extends Auditable {
     @JsonIgnoreProperties(value = {"users", "tickets", "assignedUser", "projectOwner"}, allowSetters = true)
     private Set<Project> ownedProjects = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "ticketOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = {"project", "assignedUser", "ticketOwner"}, allowSetters = true)
     private List<Ticket> ownedTickets = new ArrayList<>();
 
     @OneToMany(mappedBy = "assignedUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties(value = { "project", "roles", "tickets", "assignedUser", "ticketOwner"}, allowSetters = true)
+    @JsonIgnoreProperties(value = { "project", "tickets", "comments", "assignedUser", "ticketOwner"}, allowSetters = true)
     private Set<Ticket> assignedTickets = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "commentOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = { "commentOwner", "ticket"}, allowSetters = true)
     private List<Comment> comments = new ArrayList<>();

@@ -29,17 +29,19 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/swagger-ui.html",
                         "/v2/api-docs",
                         "/webjars/**",
-                        "/users/register")
+                        "/auth/register",
+                        "/oauth/token", "login")
                 .permitAll()
-                .antMatchers(HttpMethod.POST,
-                        "/users/**")
+                .antMatchers("/users/**")
                 .hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.DELETE,
-                        "/users/**")
+                .antMatchers("/projects/**")
                 .hasAnyRole("ADMIN", "USER")
-                .antMatchers(HttpMethod.PUT,
-                        "/users/**")
+                .antMatchers("/tickets/**")
                 .hasAnyRole("ADMIN", "USER")
+                .antMatchers("/comments/**")
+                .hasAnyRole("ADMIN", "USER")
+                .antMatchers("/oath/revoke-token", "/logout")
+                .authenticated()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new OAuth2AccessDeniedHandler());

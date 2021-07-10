@@ -67,21 +67,6 @@ public class UserController {
                 HttpStatus.OK);
     }
 
-    // register a new user record
-    @PostMapping(value = "/register",
-            consumes = "application/json")
-    public ResponseEntity<?> addNewUser(
-            @Valid
-            @RequestBody
-                    User newuser)
-            throws ResourceFoundException {
-        // first check if username or email are already taken
-        if (userRepository.findByEmail(newuser.getEmail()) != null || userRepository.findByUsername(newuser.getUsername()) != null) {
-           throw new ResourceFoundException("email or username already taken");
-        }
-
-        return new ResponseEntity<>(userService.save(newuser), HttpStatus.CREATED);
-    }
 
    // partially update a user record
     @PatchMapping(value = "/user/{id}",
