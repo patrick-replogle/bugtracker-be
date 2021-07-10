@@ -28,11 +28,11 @@ public class ProjectController {
 
 
     // returns a list of all projects
-    @GetMapping(value = "/project",
+    @GetMapping(value = "/projects",
             produces = "application/json")
-    public ResponseEntity<?> listAllUsers() {
-        List<Project> myUsers = projectService.findAll();
-        return new ResponseEntity<>(myUsers, HttpStatus.OK);
+    public ResponseEntity<?> listAllProjects() {
+        List<Project> projects = projectService.findAll();
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     // return a single project by projectid
