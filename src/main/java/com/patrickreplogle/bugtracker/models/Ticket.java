@@ -1,16 +1,22 @@
 package com.patrickreplogle.bugtracker.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Table(name = "tickets")
 public class Ticket extends Auditable {
+
+    enum PriorityLevel {
+        LOW,
+        MEDIUM,
+        HIGH
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +35,7 @@ public class Ticket extends Auditable {
     private boolean completed = false;
 
     @Column(nullable = false)
-    private String priority;
+    private PriorityLevel priority;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "projectid")
@@ -53,7 +59,7 @@ public class Ticket extends Auditable {
     public Ticket() {
     }
 
-    public Ticket(@NotNull String title, @NotNull String description, String imageurl, Project project, User ticketOwner, User assignedUser, @NotNull String priority) {
+    public Ticket(@NotNull String title, @NotNull String description, String imageurl, Project project, User ticketOwner, User assignedUser, @NotNull PriorityLevel priority) {
         this.title = title;
         this.description = description;
         this.imageurl = imageurl;
@@ -127,11 +133,11 @@ public class Ticket extends Auditable {
         this.assignedUser = assignedUser;
     }
 
-    public String getPriority() {
+    public PriorityLevel getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(PriorityLevel priority) {
         this.priority = priority;
     }
 

@@ -13,7 +13,7 @@ public class Comment extends Auditable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long commentid;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String comment;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -21,7 +21,7 @@ public class Comment extends Auditable {
     @JsonIgnoreProperties(value = {"allProjects", "ownedProjects", "roles", "ownedTickets", "projectOwner", "assignedTickets", "hibernateLazyInitializer", "handler" }, allowSetters = true)
     private User commentOwner;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "ticketid")
     @JsonIgnoreProperties(value = {"ticketOwner", "project", "assignedUser", "comments" }, allowSetters = true)
     private Ticket ticket;
