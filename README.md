@@ -32,7 +32,10 @@ Backend base url: https://bugtracker-back-end.herokuapp.com
  - RUNTIME_ENV (development / production / testing / staging / etc...)
  - OAUTHCLIENTID
  - OAUTHCLIENTSECRET
- 
+ - POSTGRES_USER
+ - POSTGRES_PASSWORD
+ - POSTGRES_URL
+ g
  ## API Routes
  
  ### Auth endpoints
