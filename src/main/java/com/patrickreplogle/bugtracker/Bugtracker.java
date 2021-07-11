@@ -11,20 +11,17 @@ public class Bugtracker {
 
     private static boolean stop = false;
 
-    private static void checkEnvironmentVariable(String envvar) {
-        if (System.getenv(envvar) == null) {
-            System.out.println("Missing " + envvar + " environment variable.");
-            stop = true;
+    private static void checkEnvironmentVariables(String[] envVarsList) {
+        for (String envvar : envVarsList) {
+            if (System.getenv(envvar) == null) {
+                System.out.println("Missing " + envvar + " environment variable.");
+                stop = true;
+            }
         }
     }
 
     public static void main(String[] args) {
-        checkEnvironmentVariable(Constants.OAUTHCLIENTID);
-        checkEnvironmentVariable(Constants.OAUTHCLIENTSECRET);
-        checkEnvironmentVariable(Constants.RUNTIME_ENV);
-        checkEnvironmentVariable(Constants.POSTGRES_USER);
-        checkEnvironmentVariable(Constants.POSTGRES_PASSWORD);
-        checkEnvironmentVariable(Constants.POSTGRES_URL);
+        checkEnvironmentVariables(Constants.requiredEnvVars);
 
         if (!stop) {
             SpringApplication.run(Bugtracker.class, args);

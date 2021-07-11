@@ -9,4 +9,9 @@ public final class Constants {
     public static final String POSTGRES_USER = "POSTGRES_USER";
     public static final String POSTGRES_PASSWORD = "POSTGRES_PASSWORD";
     public static final String POSTGRES_URL = "POSTGRES_URL";
+
+    public static final String[] requiredEnvVars = {
+            OAUTHCLIENTID, OAUTHCLIENTSECRET, RUNTIME_ENV, POSTGRES_USER,
+            POSTGRES_PASSWORD, POSTGRES_URL
+    };
 }
