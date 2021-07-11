@@ -35,7 +35,7 @@ Backend base url: https://bugtracker-back-end.herokuapp.com
  - POSTGRES_USER
  - POSTGRES_PASSWORD
  - POSTGRES_URL
- g
+ 
  ## API Routes
  
  ### Auth endpoints
