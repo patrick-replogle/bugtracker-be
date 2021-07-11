@@ -22,9 +22,6 @@ public class Bugtracker {
         checkEnvironmentVariable(Constants.OAUTHCLIENTID);
         checkEnvironmentVariable(Constants.OAUTHCLIENTSECRET);
         checkEnvironmentVariable(Constants.RUNTIME_ENV);
-        checkEnvironmentVariable(Constants.POSTGRES_URL);
-        checkEnvironmentVariable(Constants.POSTGRES_PASSWORD);
-        checkEnvironmentVariable(Constants.POSTGRES_USER);
 
         if (!stop) {
             SpringApplication.run(Bugtracker.class, args);
