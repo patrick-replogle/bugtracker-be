@@ -9,6 +9,8 @@ import com.patrickreplogle.bugtracker.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -63,6 +65,18 @@ public class UserController {
             @PathVariable
                     String userName) {
         List<User> user = userService.findByNameContaining(userName);
+        return new ResponseEntity<>(user,
+                HttpStatus.OK);
+    }
+
+    // returns the user making the current request based off of the provided token
+    @GetMapping(value = "/user/token",
+            produces = "application/json")
+    public ResponseEntity<?> getUserFromToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userService.findByName(authentication.getName());
+
         return new ResponseEntity<>(user,
                 HttpStatus.OK);
     }
