@@ -72,7 +72,7 @@ public class ProjectController {
             @PathVariable
                     long projectid) {
         projectService.delete(projectid);
-        
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
