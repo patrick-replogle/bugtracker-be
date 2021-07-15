@@ -40,7 +40,7 @@ public class Project extends Auditable {
     @JsonIgnoreProperties(value = {"allProjects", "ownedProjects", "roles", "ownedTickets", "assignedTickets", "hibernateLazyInitializer", "handler" }, allowSetters = true)
     private Set<User> users = new HashSet<>();
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid")
     @JsonIgnoreProperties(value = {"allProjects", "roles", "ownedTickets", "assignedTickets", "ownedProjects", "hibernateLazyInitializer", "handler"}, allowSetters = true)
     private User projectOwner;

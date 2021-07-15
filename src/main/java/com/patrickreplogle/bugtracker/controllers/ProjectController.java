@@ -61,8 +61,9 @@ public class ProjectController {
             consumes = "application/json")
     public ResponseEntity<?> updateProject(
             @RequestBody Project updateProject, @PathVariable long projectid) {
-        projectService.update(updateProject, projectid);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Project updatedProject = projectService.update(updateProject, projectid);
+
+        return new ResponseEntity<>(updatedProject, HttpStatus.OK);
     }
 
     // delete a project record
@@ -71,6 +72,7 @@ public class ProjectController {
             @PathVariable
                     long projectid) {
         projectService.delete(projectid);
+        
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

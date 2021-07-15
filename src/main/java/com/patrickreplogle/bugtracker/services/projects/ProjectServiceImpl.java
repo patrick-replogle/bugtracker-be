@@ -4,7 +4,9 @@ import com.patrickreplogle.bugtracker.exceptions.AccessDeniedException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
 import com.patrickreplogle.bugtracker.models.Project;
 import com.patrickreplogle.bugtracker.models.User;
+import com.patrickreplogle.bugtracker.models.UserRoles;
 import com.patrickreplogle.bugtracker.repository.ProjectRepository;
+import com.patrickreplogle.bugtracker.repository.UserRepository;
 import com.patrickreplogle.bugtracker.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public List<Project> findAll() {
@@ -63,10 +68,14 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElseThrow(() -> new ResourceNotFoundException("Project with id " + id + " not found."));
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(authentication.getName());
 
-        if (deletedProject.getProjectOwner().getUsername() != authentication.getName()) {
+        if (!deletedProject.getProjectOwner().getUsername().equalsIgnoreCase(authentication.getName())) {
             throw new AccessDeniedException("User " + authentication.getName() + " does not have permission to delete project id " + id);
         }
+
+        userRepository.deleteUserProject(user.getUserid(), deletedProject.getProjectid());
+
         projectRepository.deleteById(id);
     }
 
@@ -77,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (project.getProjectOwner().getUsername() != authentication.getName()) {
+        if (!project.getProjectOwner().getUsername().equals(authentication.getName())) {
             throw new AccessDeniedException("User " + authentication.getName() + " does not have permission to update project id " + id);
         }
 
