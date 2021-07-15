@@ -43,9 +43,8 @@ public class CommentController {
             consumes = "application/json")
     public ResponseEntity<?> updateComment (
             @RequestBody Comment updateComment, @PathVariable long commentid) {
-        commentService.update(updateComment, commentid);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(commentService.update(updateComment, commentid), HttpStatus.OK);
     }
 
     // delete a comment record

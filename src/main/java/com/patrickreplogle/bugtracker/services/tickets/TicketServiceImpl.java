@@ -75,6 +75,10 @@ public class TicketServiceImpl implements TicketService {
             currentTicket.setPriority(ticket.getPriority());
         }
 
+        if (ticket.isCompleted() != currentTicket.isCompleted()) {
+            currentTicket.setCompleted(ticket.isCompleted());
+        }
+
         if (ticket.getAssignedUser() != null) {
             currentTicket.setAssignedUser(ticket.getAssignedUser());
         }

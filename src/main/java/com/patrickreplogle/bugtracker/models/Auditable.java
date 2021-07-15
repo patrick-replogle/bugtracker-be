@@ -29,4 +29,12 @@ abstract public class Auditable {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     protected Date lastmodifieddate;
+
+    public Date getCreateddate() {
+        return createddate;
+    }
+
+    public Date getLastmodifieddate() {
+        return lastmodifieddate;
+    }
 }
