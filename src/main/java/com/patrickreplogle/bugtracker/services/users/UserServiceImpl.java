@@ -26,9 +26,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private RoleService roleService;
 
-    @Autowired
-    private ProjectService projectService;
-
     @Override
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
@@ -63,6 +60,11 @@ public class UserServiceImpl implements UserService{
         }
 
         return user;
+    }
+
+    @Override
+    public List<User> findUsersBySearchTerm(String name) {
+        return userRepository.findUsersBySearchTerm(name);
     }
 
     @Override
@@ -105,7 +107,7 @@ public class UserServiceImpl implements UserService{
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (currentUser.getUsername() != authentication.getName()) {
+        if (!currentUser.getUsername().equals(authentication.getName())) {
             throw new AccessDeniedException("User " + authentication.getName() + " does not have permission to update user id " + id);
         }
 

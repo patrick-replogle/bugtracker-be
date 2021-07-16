@@ -2,8 +2,10 @@ package com.patrickreplogle.bugtracker.services.tickets;
 
 import com.patrickreplogle.bugtracker.exceptions.AccessDeniedException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
+import com.patrickreplogle.bugtracker.models.Project;
 import com.patrickreplogle.bugtracker.models.Ticket;
 import com.patrickreplogle.bugtracker.models.User;
+import com.patrickreplogle.bugtracker.repository.ProjectRepository;
 import com.patrickreplogle.bugtracker.repository.TicketRepository;
 import com.patrickreplogle.bugtracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ProjectRepository projectRepository;
+
     @Override
     public Ticket findTicketById(long id) {
         return ticketRepository.findById(id)
@@ -29,12 +34,22 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket save(Ticket ticket) {
+    public Ticket save(Ticket ticket) throws ResourceNotFoundException, AccessDeniedException {
+        Project project = projectRepository.findById(ticket.getProject().getProjectid())
+                .orElseThrow(() -> new ResourceNotFoundException("Project with id " + ticket.getProject().getProjectid() + " not found."));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(authentication.getName());
+
+        if (!project.getUsers().contains(user)) {
+            throw new AccessDeniedException("User " + authentication.getName() + " does not have permission to create ticket");
+        }
+
         return ticketRepository.save(ticket);
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(long id) throws ResourceNotFoundException, AccessDeniedException {
         Ticket ticketToDelete = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket id " + id + " not found."));
 
@@ -49,7 +64,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket update(Ticket ticket, long id) {
+    public Ticket update(Ticket ticket, long id) throws AccessDeniedException {
         Ticket currentTicket = findTicketById(id);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

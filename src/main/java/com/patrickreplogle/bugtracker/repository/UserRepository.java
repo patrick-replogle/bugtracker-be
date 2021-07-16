@@ -28,4 +28,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query(value = "SELECT * FROM userprojects WHERE userid = :userid AND projectid = :projectid", nativeQuery = true)
     Object findUserProject(long userid, long projectid);
+
+    @Query(value = "SELECT * FROM users AS u WHERE LOWER(CONCAT(u.firstname, u.lastName)) LIKE :name OR LOWER(u.firstname) LIKE :name OR LOWER(u.lastname) LIKE :name OR LOWER(u.email) LIKE :name OR LOWER(u.username) LIKE :name", nativeQuery = true)
+    List<User> findUsersBySearchTerm(String name);
 }

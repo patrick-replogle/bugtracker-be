@@ -10,6 +10,8 @@ public interface UserService {
 
     List<User> findByNameContaining(String username);
 
+    List<User> findUsersBySearchTerm(String name);
+
     User findByName(String username);
 
     User findUserByEmail(String email);

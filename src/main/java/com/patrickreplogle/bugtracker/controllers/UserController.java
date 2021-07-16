@@ -69,6 +69,17 @@ public class UserController {
                 HttpStatus.OK);
     }
 
+    // returns a list of users whose name, username or email match the given substring
+    @GetMapping(value = "/user/search/{searchterm}",
+            produces = "application/json")
+    public ResponseEntity<?> getUsersBySearchTerm(
+            @PathVariable
+                    String searchterm) {
+        List<User> users = userService.findUsersBySearchTerm(searchterm);
+        return new ResponseEntity<>(users,
+                HttpStatus.OK);
+    }
+
     // returns the user making the current request based off of the provided token
     @GetMapping(value = "/user/token",
             produces = "application/json")
@@ -90,9 +101,8 @@ public class UserController {
                     User updateUser,
             @PathVariable
                     long id) {
-        userService.update(updateUser,
-                id);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        return new ResponseEntity<>(userService.update(updateUser, id), HttpStatus.OK);
     }
 
     // delete a user record
