@@ -39,7 +39,7 @@ public class Ticket extends Auditable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "projectid")
-    @JsonIgnoreProperties(value = {"tickets", "projectOwner", "users"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"tickets", "projectOwner" }, allowSetters = true)
     private Project project;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
