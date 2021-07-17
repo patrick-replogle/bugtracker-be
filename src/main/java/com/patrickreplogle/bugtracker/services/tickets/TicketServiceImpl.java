@@ -95,7 +95,11 @@ public class TicketServiceImpl implements TicketService {
         }
 
         if (ticket.getAssignedUser() != null) {
-            currentTicket.setAssignedUser(ticket.getAssignedUser());
+            if (currentTicket.getAssignedUser() == null || ticket.getAssignedUser().getUserid() != currentTicket.getAssignedUser().getUserid()) {
+                currentTicket.setAssignedUser(ticket.getAssignedUser());
+            } else {
+                currentTicket.setAssignedUser(null);
+            }
         }
 
         return ticketRepository.save(currentTicket);
