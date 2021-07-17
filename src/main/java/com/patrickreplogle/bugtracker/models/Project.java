@@ -34,7 +34,7 @@ public class Project extends Auditable {
     @ManyToMany(fetch = FetchType.LAZY,
         cascade = {
                 CascadeType.PERSIST,
-                CascadeType.MERGE
+                CascadeType.MERGE,
         },
         mappedBy = "allProjects")
     @JsonIgnoreProperties(value = {"allProjects", "ownedProjects", "roles", "ownedTickets", "assignedTickets", "hibernateLazyInitializer", "handler" }, allowSetters = true)
@@ -135,6 +135,13 @@ public class Project extends Auditable {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    @PreRemove
+    private void removeUsersFromProject() {
+        for (User u : users) {
+            u.getAllProjects().remove(this);
+        }
     }
 
     // === override methods ====

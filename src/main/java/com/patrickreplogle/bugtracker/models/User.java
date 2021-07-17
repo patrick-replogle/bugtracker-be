@@ -197,6 +197,8 @@ public class User extends Auditable {
         this.comments = comments;
     }
 
+
+
     // === override methods ===
     @Override
     public String toString() {

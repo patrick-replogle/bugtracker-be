@@ -148,4 +148,5 @@ public class Ticket extends Auditable {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
 }
