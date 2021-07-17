@@ -9,6 +9,7 @@ Basic features include:
 - Create and assign tickets for each project based on priority level and mark tickets as completed
 - Comment on tickets
 
+Deployed site: https://bugtracker-frontend.netlify.app
 Backend base url: https://bugtracker-back-end.herokuapp.com
 
 ## Tech Stack
@@ -19,6 +20,9 @@ Backend base url: https://bugtracker-back-end.herokuapp.com
  - H2
  - PostgreSQL
  - Heroku
+ - Vue
+ - Nuxt
+ - Bootstrap
  
  ## Contributor
  
