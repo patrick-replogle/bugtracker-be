@@ -37,8 +37,11 @@ public class User extends Auditable {
     @Column(nullable = false)
     private String lastname;
 
-    @Column(nullable = true)
+    @Column
     private String company;
+
+    @Column
+    private String imageurl;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = {"user"}, allowSetters = true)
@@ -197,7 +200,13 @@ public class User extends Auditable {
         this.comments = comments;
     }
 
+    public String getImageurl() {
+        return imageurl;
+    }
 
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
 
     // === override methods ===
     @Override
