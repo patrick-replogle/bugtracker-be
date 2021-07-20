@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public class CommentController {
 
     @Autowired
-    CommentService commentService;
+    private CommentService commentService;
 
     // return a single comment by id
     @GetMapping(value = "/comment/{commentid}",

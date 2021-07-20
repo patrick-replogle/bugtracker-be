@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public class TicketController {
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
 
     // get ticket by id
     @GetMapping(value = "/ticket/{ticketId}",

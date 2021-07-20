@@ -2,9 +2,12 @@ package com.patrickreplogle.bugtracker.controllers;
 
 import com.patrickreplogle.bugtracker.exceptions.ResourceFoundException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
+import com.patrickreplogle.bugtracker.models.Ticket;
 import com.patrickreplogle.bugtracker.models.User;
+import com.patrickreplogle.bugtracker.repository.TicketRepository;
 import com.patrickreplogle.bugtracker.repository.UserRepository;
 import com.patrickreplogle.bugtracker.services.projects.ProjectService;
+import com.patrickreplogle.bugtracker.services.tickets.TicketService;
 import com.patrickreplogle.bugtracker.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,12 @@ public class UserController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private TicketService ticketService;
+
+    @Autowired
+    private TicketRepository ticketRepository;
 
     // returns a list of all users
     @GetMapping(value = "/users",
@@ -143,6 +152,12 @@ public class UserController {
         }
 
         userRepository.deleteUserProject(userid, projectid);
+
+        List<Ticket> assignedTickets = ticketRepository.findAssignedTickets(userid, projectid);
+
+        for (Ticket t : assignedTickets) {
+            ticketRepository.unassignUserFromTicket(t.getTicketid());
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

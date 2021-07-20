@@ -3,6 +3,7 @@ package com.patrickreplogle.bugtracker.controllers;
 import com.patrickreplogle.bugtracker.exceptions.ResourceFoundException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
 import com.patrickreplogle.bugtracker.models.Project;
+import com.patrickreplogle.bugtracker.models.Ticket;
 import com.patrickreplogle.bugtracker.repository.ProjectRepository;
 import com.patrickreplogle.bugtracker.services.projects.ProjectService;
 import com.patrickreplogle.bugtracker.services.users.UserService;

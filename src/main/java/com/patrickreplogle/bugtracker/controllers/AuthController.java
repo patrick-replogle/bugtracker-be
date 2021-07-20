@@ -19,10 +19,10 @@ import javax.validation.Valid;
 public class AuthController {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     // register a new user record
     @PostMapping(value = "/register",
