@@ -22,6 +22,7 @@ Front-end repo: https://github.com/patrick-replogle/bugtracker-fe
  - Maven
  - H2
  - PostgreSQL
+ - Cloudinary
  - Heroku
  - Vue
  - Nuxt
@@ -42,6 +43,9 @@ Front-end repo: https://github.com/patrick-replogle/bugtracker-fe
  - POSTGRES_USER
  - POSTGRES_PASSWORD
  - POSTGRES_URL
+ - CLOUDINARY_NAME
+ - CLOUDINARY_API_KEY,
+ - CLOUDINARY_API_SECRET
  
  ## API Routes
  

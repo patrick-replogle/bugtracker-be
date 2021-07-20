@@ -2,6 +2,7 @@ package com.patrickreplogle.bugtracker.services.tickets;
 
 import com.patrickreplogle.bugtracker.exceptions.AccessDeniedException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
+import com.patrickreplogle.bugtracker.models.CloudinaryUploader;
 import com.patrickreplogle.bugtracker.models.Project;
 import com.patrickreplogle.bugtracker.models.Ticket;
 import com.patrickreplogle.bugtracker.models.User;
@@ -27,6 +28,9 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     ProjectRepository projectRepository;
 
+    @Autowired
+    CloudinaryUploader cloudinaryUploader;
+
     @Override
     public Ticket findTicketById(long id) {
         return ticketRepository.findById(id)
@@ -45,6 +49,11 @@ public class TicketServiceImpl implements TicketService {
             throw new AccessDeniedException("User " + authentication.getName() + " does not have permission to create ticket");
         }
 
+        // upload image to cloudinary
+        if (ticket.getImageurl() != null && !ticket.getImageurl().startsWith("http")) {
+            ticket.setImageurl(cloudinaryUploader.addNewImage(ticket.getImageurl()));
+        }
+
         return ticketRepository.save(ticket);
     }
 
@@ -58,6 +67,11 @@ public class TicketServiceImpl implements TicketService {
 
         if (!ticketToDelete.getProject().getUsers().contains(user)) {
             throw new AccessDeniedException("User " + authentication.getName() + " does not have permission to delete ticket id " + id);
+        }
+
+        // delete image from cloudinary
+        if (ticketToDelete.getImageurl() != null) {
+            cloudinaryUploader.removeImage(ticketToDelete.getImageurl());
         }
 
         ticketRepository.deleteById(id);
@@ -82,10 +96,6 @@ public class TicketServiceImpl implements TicketService {
             currentTicket.setDescription(ticket.getDescription());
         }
 
-        if (ticket.getImageurl() != null) {
-            currentTicket.setImageurl(ticket.getImageurl());
-        }
-
         if (ticket.getPriority() != null) {
             currentTicket.setPriority(ticket.getPriority());
         }
@@ -99,6 +109,15 @@ public class TicketServiceImpl implements TicketService {
                 currentTicket.setAssignedUser(ticket.getAssignedUser());
             } else {
                 currentTicket.setAssignedUser(null);
+            }
+        }
+
+        if (ticket.getImageurl() != null && !ticket.getImageurl().startsWith("http")) {
+            String url = currentTicket.getImageurl();
+            if (url == null) {
+                currentTicket.setImageurl(cloudinaryUploader.addNewImage(ticket.getImageurl()));
+            } else {
+                currentTicket.setImageurl(cloudinaryUploader.updateImage(ticket.getImageurl(), url));
             }
         }
 

@@ -21,10 +21,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
-    private RoleService roleService;
+    RoleService roleService;
+
+    @Autowired
+    CloudinaryUploader cloudinaryUploader;
 
     @Override
     public List<User> findAll() {
@@ -82,6 +85,11 @@ public class UserServiceImpl implements UserService{
                 user.getRoles().add(new UserRoles(user, addRole));
             }
 
+            // upload image to cloudinary
+            if (user.getImageurl() != null && !user.getImageurl().startsWith("http")) {
+                user.setImageurl(cloudinaryUploader.addNewImage(user.getImageurl()));
+            }
+
             return userRepository.save(user);
     }
 
@@ -95,6 +103,11 @@ public class UserServiceImpl implements UserService{
 
         if (userToDelete.getUsername() != authentication.getName()) {
             throw new AccessDeniedException("User " + authentication.getName() + " does not have permission to delete user id " + userToDelete.getUserid());
+        }
+
+        // delete image from cloudinary
+        if (userToDelete.getImageurl() != null) {
+            cloudinaryUploader.removeImage(userToDelete.getImageurl());
         }
 
         userRepository.deleteById(id);
@@ -130,6 +143,15 @@ public class UserServiceImpl implements UserService{
 
         if (user.getCompany() != null) {
             currentUser.setCompany(user.getCompany());
+        }
+
+        if (user.getImageurl() != null && !user.getImageurl().startsWith("http")) {
+            String url = currentUser.getImageurl();
+            if (url == null) {
+                currentUser.setImageurl(cloudinaryUploader.addNewImage(user.getImageurl()));
+            } else {
+                currentUser.setImageurl(cloudinaryUploader.updateImage(user.getImageurl(), url));
+            }
         }
 
         return userRepository.save(currentUser);

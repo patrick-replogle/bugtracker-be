@@ -2,9 +2,7 @@ package com.patrickreplogle.bugtracker.services.projects;
 
 import com.patrickreplogle.bugtracker.exceptions.AccessDeniedException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
-import com.patrickreplogle.bugtracker.models.Project;
-import com.patrickreplogle.bugtracker.models.User;
-import com.patrickreplogle.bugtracker.models.UserRoles;
+import com.patrickreplogle.bugtracker.models.*;
 import com.patrickreplogle.bugtracker.repository.ProjectRepository;
 import com.patrickreplogle.bugtracker.repository.UserRepository;
 import com.patrickreplogle.bugtracker.services.users.UserService;
@@ -14,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +28,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CloudinaryUploader cloudinaryUploader;
 
     @Override
     public List<Project> findAll() {
@@ -50,6 +52,11 @@ public class ProjectServiceImpl implements ProjectService {
     public Project save(Project project) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByName(authentication.getName());
+
+        // upload image to cloudinary
+        if (project.getImageurl() != null && !project.getImageurl().startsWith("http")) {
+            project.setImageurl(cloudinaryUploader.addNewImage(project.getImageurl()));
+        }
 
         project = projectRepository.save(project);
 
@@ -76,6 +83,11 @@ public class ProjectServiceImpl implements ProjectService {
 
         userRepository.deleteUserProject(user.getUserid(), deletedProject.getProjectid());
 
+        // remove image from cloudinary
+        if (deletedProject.getImageurl() != null) {
+            cloudinaryUploader.removeImage(deletedProject.getImageurl());
+        }
+
         projectRepository.deleteById(id);
     }
 
@@ -98,16 +110,21 @@ public class ProjectServiceImpl implements ProjectService {
             currentProject.setDescription(project.getDescription());
         }
 
-        if (project.getImageurl() != null) {
-            currentProject.setImageurl(project.getImageurl());
-        }
-
         if (project.getRepositoryurl() != null) {
             currentProject.setRepositoryurl(project.getRepositoryurl());
         }
 
         if (project.getWebsiteurl() != null) {
             currentProject.setWebsiteurl(project.getWebsiteurl());
+        }
+        
+        if (project.getImageurl() != null && !project.getImageurl().startsWith("http")) {
+            String url = currentProject.getImageurl();
+            if (url  == null) {
+                currentProject.setImageurl(cloudinaryUploader.addNewImage(project.getImageurl()));
+            } else {
+                currentProject.setImageurl(cloudinaryUploader.updateImage(project.getImageurl(), url));
+            }
         }
 
         return projectRepository.save(currentProject);
