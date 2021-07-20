@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/jrmmba-foundation.jar
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar target/bugtracker-back-end.jar
