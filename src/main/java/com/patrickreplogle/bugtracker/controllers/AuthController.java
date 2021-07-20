@@ -39,5 +39,4 @@ public class AuthController {
 
         return new ResponseEntity<>(userService.save(newuser), HttpStatus.CREATED);
     }
-
 }
