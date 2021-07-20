@@ -19,4 +19,5 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     @Query(value = "SELECT * FROM userprojects WHERE userid = :userid AND projectid = :projectid", nativeQuery = true)
     Object findProjectUser(long userid, long projectid);
+
 }

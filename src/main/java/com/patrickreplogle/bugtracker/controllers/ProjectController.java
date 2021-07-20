@@ -2,9 +2,11 @@ package com.patrickreplogle.bugtracker.controllers;
 
 import com.patrickreplogle.bugtracker.exceptions.ResourceFoundException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceNotFoundException;
+import com.patrickreplogle.bugtracker.models.CloudinaryUploader;
 import com.patrickreplogle.bugtracker.models.Project;
 import com.patrickreplogle.bugtracker.models.Ticket;
 import com.patrickreplogle.bugtracker.repository.ProjectRepository;
+import com.patrickreplogle.bugtracker.repository.TicketRepository;
 import com.patrickreplogle.bugtracker.services.projects.ProjectService;
 import com.patrickreplogle.bugtracker.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,12 @@ public class ProjectController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TicketRepository ticketRepository;
+
+    @Autowired
+    private CloudinaryUploader cloudinaryUploader;
 
 
     // returns a list of all projects
@@ -72,6 +80,13 @@ public class ProjectController {
     public ResponseEntity<?> deleteProjectById(
             @PathVariable
                     long projectid) {
+
+        List<Ticket> tickets = ticketRepository.findProjectTicketsWithImage(projectid);
+        // delete ticket images from cloudinary associated with project -> slow request and might need to be changed in the future
+        for (Ticket t : tickets) {
+            cloudinaryUploader.removeImage(t.getImageurl());
+        }
+
         projectService.delete(projectid);
 
         return new ResponseEntity<>(HttpStatus.OK);
