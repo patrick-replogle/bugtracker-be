@@ -82,12 +82,13 @@ public class ProjectController {
                     long projectid) {
 
         List<Ticket> tickets = ticketRepository.findProjectTicketsWithImage(projectid);
-        // delete ticket images from cloudinary associated with project -> slow request and might need to be changed in the future
+
+        projectService.delete(projectid);
+
+        // delete ticket images from cloudinary associated with project -> slow request and might be better as a cron job
         for (Ticket t : tickets) {
             cloudinaryUploader.removeImage(t.getImageurl());
         }
-
-        projectService.delete(projectid);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
