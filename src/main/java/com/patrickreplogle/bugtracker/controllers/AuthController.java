@@ -1,5 +1,6 @@
 package com.patrickreplogle.bugtracker.controllers;
 
+import com.patrickreplogle.bugtracker.exceptions.AccessDeniedException;
 import com.patrickreplogle.bugtracker.exceptions.ResourceFoundException;
 import com.patrickreplogle.bugtracker.models.User;
 import com.patrickreplogle.bugtracker.models.UserMinimum;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
@@ -53,37 +55,56 @@ public class AuthController {
 
         userService.save(user);
 
-        // return the access token
-        RestTemplate restTemplate = new RestTemplate();
-        String requestURI = System.getenv(Constants.RUNTIME_ENV).equals("development") ?
-                "http://localhost:2019/login" : "https://bugtracker-back-end.herokuapp.com/login";
+        return getToken(newuser);
+    }
 
-        List<MediaType> acceptableMediaTypes = new ArrayList<>();
-        acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
+    // safely login user -> request is made from the server to avoid storing OAUTH secret on the client
+    @PostMapping(value = "/login",
+            consumes = "application/json")
+    public ResponseEntity<?> loginUser(
+            @Valid
+            @RequestBody
+                    UserMinimum user)
+            throws ResourceFoundException {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.setAccept(acceptableMediaTypes);
-        headers.setBasicAuth(System.getenv(Constants.OAUTHCLIENTID),
-                System.getenv(Constants.OAUTHCLIENTSECRET));
+        return getToken(user);
+    }
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("grant_type",
-                "password");
-        map.add("scope",
-                "read write trust");
-        map.add("username",
-                newuser.getUsername());
-        map.add("password",
-                newuser.getPassword());
+    public ResponseEntity<?> getToken(UserMinimum user) throws HttpStatusCodeException  {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String requestURI = System.getenv(Constants.RUNTIME_ENV).equals("production") ?
+                    "https://bugtracker-back-end.herokuapp.com/login" : "http://localhost:2019/login";
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map,
-                headers);
+            List<MediaType> acceptableMediaTypes = new ArrayList<>();
+            acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
 
-        String theToken = restTemplate.postForObject(requestURI,
-                request,
-                String.class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            headers.setAccept(acceptableMediaTypes);
+            headers.setBasicAuth(System.getenv(Constants.OAUTHCLIENTID),
+                    System.getenv(Constants.OAUTHCLIENTSECRET));
 
-        return new ResponseEntity<>(theToken, HttpStatus.CREATED);
+            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+            map.add("grant_type",
+                    "password");
+            map.add("scope",
+                    "read write trust");
+            map.add("username",
+                    user.getUsername());
+            map.add("password",
+                    user.getPassword());
+
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map,
+                    headers);
+
+            String theToken = restTemplate.postForObject(requestURI,
+                    request,
+                    String.class);
+
+            return new ResponseEntity<>(theToken, HttpStatus.OK);
+        } catch (HttpStatusCodeException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 }
